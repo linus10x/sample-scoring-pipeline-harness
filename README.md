@@ -1,6 +1,6 @@
 # SAMPLE: validation harness for a proprietary scoring pipeline
 
-> **Sample / illustrative work by Kunjar Bhaduri (Bhaduri Advisory). Synthetic data only; every "creator" is invented. Not a client deliverable and not based on any real company's code or data.** Built October 2, 2026, with AI coding assistance under my direction; I reviewed, ran and tested it.
+> **Sample / illustrative work by Kunjar Bhaduri (Bhaduri Advisory). Synthetic data only; every "creator" is invented. Not a client deliverable and not based on any real company's code or data.** Built October 2, 2026, by AI coding tools under my direction; the results below were run that day.
 
 ## Which bids it answers
 Written as a work sample for fractional CTO postings where an early-stage analytics company has a fragile, AI-patched scoring pipeline and needs it validated before investor diligence, and for analytics SaaS roles that ask for pipeline reliability and accuracy checks. **Illustrative sample on synthetic data. No client relationship.**
@@ -36,4 +36,4 @@ Week 1: wrap the existing scoring code as-is (no rewrite), write the data contra
 - No claim about any real platform's accuracy or performance.
 
 ## Where it lives
-Private repository github.com/linus10x/sample-scoring-pipeline-harness until it has been reviewed; it becomes public only after that review.
+github.com/linus10x/sample-scoring-pipeline-harness, made public after an accuracy review.
