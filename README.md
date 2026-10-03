@@ -1,6 +1,6 @@
 # SAMPLE: validation harness for creator-momentum scoring
 
-> **Illustrative work by Kunjar Bhaduri, Bhaduri Advisory. Every creator and metric is synthetic. Invented formulas, no client code or result. Built with AI coding tools under my direction. Revised October 2, 2026 (America/Chicago).**
+> **Illustrative sample on synthetic data by Kunjar Bhaduri, Bhaduri Advisory. Every creator and metric is synthetic. Invented formulas; no client relationship, client code or result. Built by AI coding tools under my direction. Revised October 2, 2026 (America/Chicago).**
 
 This supports the [Engineering Analytics fractional CTO mandate](https://www.gofractional.com/job/fractional-cto-cmu3aud7): establish how a fragile scoring pipeline behaves and make changes reviewable. It puts a deterministic contract and regression checks around two invented formulas. It does not establish real-world creator-scoring accuracy. The MCP gateway is the separate SnapLogic AI Architect sample.
 
