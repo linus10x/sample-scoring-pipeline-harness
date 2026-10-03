@@ -20,7 +20,7 @@ SHA-256 binds this record to the source. Changes require rechecking affected ass
 | `.github/workflows/verify.yml` | `927e7f43a269984f7e99a5aeca216de6a2de90c5245022f22f5da703a5a5c917` |
 | `.gitignore` | `862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793` |
 | `LICENSE` | `037df8cb655d4ff33487e5052e79b617699db575004c68f7e122187b8de7d67f` |
-| `README.md` | `d4d1c66c610469908f8176ead11da24561448ec3e0d58d6da9cf01635f4b167d` |
+| `README.md` | `7272652cbaaac3abf260b2014a7316f5bcdef96e1374c93732a2905e71a9a7b2` |
 | `REPORT.md` | `6508b8fb418577773781c12b7e6df52336558f06fcfb48ff1350efe6b38083ed` |
 | `harness.py` | `2069f0453c599bb2d49688821a93cd17d42946e0029df0df463d8cef1cc23381` |
 | `momentum/__init__.py` | `96e632ad659b11edeceba7395dd987e3a9110ed4f683fdb57daa7dcbdfc985f6` |

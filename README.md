@@ -1,8 +1,8 @@
 # SAMPLE: validation harness for creator-momentum scoring
 
-> **Illustrative sample on synthetic data by Kunjar Bhaduri, Bhaduri Advisory. Every creator and metric is synthetic. Invented formulas; no client relationship, client code or result. Built by AI coding tools under my direction. Revised October 2, 2026 (America/Chicago).**
+> **Illustrative sample on synthetic data by Kunjar Bhaduri, Bhaduri Advisory. Every creator and metric is synthetic. Invented formulas; no client relationship, client code or result. Built by AI coding tools under my direction. Revised October 3, 2026 (America/Chicago).**
 
-This supports the [Engineering Analytics fractional CTO mandate](https://www.gofractional.com/job/fractional-cto-cmu3aud7): establish how a fragile scoring pipeline behaves and make changes reviewable. It puts a deterministic contract and regression checks around two invented formulas. It does not establish real-world creator-scoring accuracy. The MCP gateway is the separate SnapLogic AI Architect sample.
+This is relevant to fractional CTO work where the job is to establish how a fragile scoring pipeline behaves and make changes reviewable. It puts a deterministic contract and regression checks around two invented formulas. It does not establish real-world creator-scoring accuracy. The MCP gateway is a separate sample.
 
 ## Run
 
@@ -44,4 +44,4 @@ The six-shared-top-ten threshold is illustrative and advisory. A pass does not a
 
 Preserve the existing scorer first. Agree the contract and golden cases with product, investigate failures/quarantine rates, then add real fixtures, release gates and freshness/latency monitoring. Investor evidence should show reproducible results, unresolved risks and the actual scope covered.
 
-This verifies implemented mathematical and contract behavior on synthetic examples. It does not validate a client's formula, causal outcome, fairness, production latency or commercial accuracy. Publication requires owner approval.
+This verifies implemented mathematical and contract behavior on synthetic examples. It does not validate a client's formula, causal outcome, fairness, production latency or commercial accuracy.
