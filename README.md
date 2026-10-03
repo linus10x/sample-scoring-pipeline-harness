@@ -1,39 +1,47 @@
-# SAMPLE: validation harness for a proprietary scoring pipeline
+# SAMPLE: validation harness for creator-momentum scoring
 
-> **Sample / illustrative work by Kunjar Bhaduri (Bhaduri Advisory). Synthetic data only; every "creator" is invented. Not a client deliverable and not based on any real company's code or data.** Built October 2, 2026, by AI coding tools under my direction; the results below were run that day.
+> **Illustrative sample on synthetic data by Kunjar Bhaduri, Bhaduri Advisory. Every creator and metric is synthetic. Invented formulas; no client relationship, client code or result. Built by AI coding tools under my direction. Revised October 3, 2026 (America/Chicago).**
 
-## Which bids it answers
-Written as a work sample for fractional CTO postings where an early-stage analytics company has a fragile, AI-patched scoring pipeline and needs it validated before investor diligence, and for analytics SaaS roles that ask for pipeline reliability and accuracy checks. **Illustrative sample on synthetic data. No client relationship.**
+This is relevant to fractional CTO work where the job is to establish how a fragile scoring pipeline behaves and make changes reviewable. It puts a deterministic contract and regression checks around two invented formulas. It does not establish real-world creator-scoring accuracy. The MCP gateway is a separate sample.
 
-## The problem it shows
-A startup's ranking or scoring system is usually the thing investors and customers trust least, because nobody can show it behaves. When the pipeline was built quickly (and patched with AI-generated fixes), the first job is not to rewrite it. It is to put a harness around it that proves, on every change, that the score is stable, explainable and protected from bad data. This sample shows that harness on an invented "creator momentum" score.
+## Run
 
-## What the harness checks
-| Check | Why an investor or customer cares |
-|---|---|
-| C1 Data contract: schema, types, nulls, negative counts, bad or future dates, duplicate keys. Bad rows are quarantined with a reason, never silently fixed | Garbage in can't quietly move a ranking |
-| C2 Determinism: same input in any row order gives the same output digest | Re-running the pipeline can't reshuffle the leaderboard |
-| C3 Duplicate invariance once the contract runs | Retries and double-loads don't inflate anyone |
-| C4 Monotonicity: doubling a creator's last-week engagement never lowers their score | The score moves the way the business says it does |
-| C5 Bounds: finite, within 0 to 100 | No NaN or overflow reaching the UI |
-| C6 Cold start: creators with under 14 days of history are not ranked | New accounts can't spike to the top on thin data |
-| C7 Golden fixtures with hand-computed expected values | Anyone can verify the maths by hand |
-| C8 Version drift (advisory): v1 vs v2 top-10 overlap and Spearman correlation | A scoring change customers will notice needs a named product sign-off |
+Python 3.10+, standard library only. From this repository:
 
-## Run it (Python 3.10+, standard library only)
 ```bash
-python3 harness.py --report REPORT.md     # exit 0 only if every blocking check passes
-python3 -m unittest discover -s tests     # 4 tests
+python3 harness.py --report REPORT.md
+python3 -m unittest discover -s tests -v
 ```
-Result on Oct 2, 2026 (Linux box, Python 3.13.5): 13/13 blocking checks passed, the advisory drift check passed at the threshold (top-10 overlap 6/10, Spearman 0.55), 4 unit tests passed. See `REPORT.md`.
 
-## How I'd use this on a real engagement
-Week 1: wrap the existing scoring code as-is (no rewrite), write the data contract from what the data actually looks like, and add golden fixtures the founders agree are correct. Week 2: run it in CI on every change, and turn the report into a one-page "how we know the score is right" exhibit for investor diligence.
+Exit 0 requires every blocking check to pass. [REPORT.md](REPORT.md) separates run timestamp, Python version and synthetic-data cutoff. [VERIFICATION.md](VERIFICATION.md) records test results. The CI workflow repeats these commands; its presence does not establish a hosted CI pass.
 
-## Limits
-- Synthetic data and invented scoring formulas. Neither formula is a recommendation.
-- The checks are examples; a real harness is built around the client's actual score definition and data.
-- No claim about any real platform's accuracy or performance.
+## Input and ranking contract
 
-## Where it lives
-github.com/linus10x/sample-scoring-pipeline-harness, made public after an accuracy review.
+Rows have exactly `creator_id`, ISO `YYYY-MM-DD` date, followers, views and engagements. IDs are trimmed, nonblank strings of at most 100 characters. Counters are nonnegative integers, excluding booleans, and at most `10**12` (explicit sample limit). The full calendar range through `date.min` is accepted, with lookback clamped at that boundary; insufficient history remains unranked. Future dates, nulls, nonmapping rows and schema/type errors are quarantined with reasons.
+
+Identical retries collapse to one accepted row; extras are reported as `duplicate_key`. If valid rows conflict for a creator/date, **all valid rows for that key** are quarantined as `conflicting_duplicate`. Invalid rows quarantine independently. Accepted rows sort canonically; ingestion order cannot choose a score. Quarantine indices refer to input order.
+
+Both scorers require all latest 14 consecutive days ending at the cutoff. Stale/sparse histories are unranked (`None`); absent creators produce no key. Run `contract.validate` first. Direct scorer functions assume validated input.
+
+v1 compares latest-seven engagement with the preceding seven, divides growth by `max(prior,1)`, then applies `100*logistic(5*growth)`. v2 uses available records in the latest 28 days, weights engagement/follower rate with a seven-day half-life, blends `0.7*ln(1+100*rate)` with `0.3*10*follower_growth`, then applies `100*logistic(2*(raw-1))`. Latest 14 days must be complete; missing days 15-28 contribute no record. Zero-follower denominators use one. Half-life is positive, finite and at most 36,500 days. These are sample conventions, not business recommendations.
+
+## Checks
+
+| Check | Evidence within the sample |
+|---|---|
+| Contract | Clean input accepted; defective rows quarantined; conflicting duplicates rejected in either order |
+| Repeatability | Same input repeats; clean and dirty end-to-end row orders produce identical scores |
+| Retry invariance | Identical retries cannot inflate scores after validation |
+| Response | Recent engagement does not lower scores in tested data; unsaturated fixtures require a strict increase |
+| Bounds/freshness | Finite scores in 0-100; new/stale histories unranked |
+| Golden fixtures | Both versions match specified flat/up/drop expectations; v2 follower-increase/decrease fixtures also verify the growth term, independently evaluated with 50/60-digit Decimal arithmetic |
+| Mutations | Constant-v2, inverted-v1 and dropped-follower-growth v2 are injected into the actual harness; tests require blocking failures |
+| Drift | Top-ten overlap plus tie-aware Spearman correlation; undefined correlation returns `None` |
+
+The six-shared-top-ten threshold is illustrative and advisory. A pass does not approve replacing a production formula. Product sign-off must use the actual score definition, approved representative data and customer impact.
+
+## Use on an engagement
+
+Preserve the existing scorer first. Agree the contract and golden cases with product, investigate failures/quarantine rates, then add real fixtures, release gates and freshness/latency monitoring. Investor evidence should show reproducible results, unresolved risks and the actual scope covered.
+
+This verifies implemented mathematical and contract behavior on synthetic examples. It does not validate a client's formula, causal outcome, fairness, production latency or commercial accuracy.
